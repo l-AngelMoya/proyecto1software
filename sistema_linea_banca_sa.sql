@@ -5,11 +5,11 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema SISTEMA LINEA BLANCA SA 
+-- Schema sistema_bd_linea_blanca
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema SISTEMA LINEA BLANCA SA 
+-- Schema sistema_bd_linea_blanca
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `sistema_bd_linea_blanca` DEFAULT CHARACTER SET utf8 ;
 USE `sistema_bd_linea_blanca` ;
@@ -18,7 +18,7 @@ USE `sistema_bd_linea_blanca` ;
 -- Table `sistema_bd_linea_blanca`.`Empleado`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`Empleado` (
-  `num_cedula` VARCHAR(10) NOT NULL,
+  `num_cedula` CHAR(10) NOT NULL,
   `nombre` VARCHAR(250) NULL,
   `apellido` VARCHAR(250) NULL,
   `usuario` VARCHAR(64) NULL,
@@ -54,18 +54,18 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sistema_bd_linea_blanca`.`Local`
+-- Table `sistema_bd_linea_blanca`.`almacen`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`Local` (
-  `idLocal` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`almacen` (
+  `id_almacen` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(250) NULL,
   `es_matriz` TINYINT NULL,
   `es_bodega` TINYINT NULL,
   `fecha_creacion` DATETIME NULL,
   `fecha_ultima_modificacion` DATETIME NULL,
   `local_eliminado` TINYINT NULL DEFAULT 0,
-  PRIMARY KEY (`idLocal`),
-  UNIQUE INDEX `idLocal_UNIQUE` (`idLocal` ASC))
+  PRIMARY KEY (`id_almacen`),
+  UNIQUE INDEX `idLocal_UNIQUE` (`id_almacen` ASC))
 ENGINE = InnoDB;
 
 
@@ -75,10 +75,10 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`directorio_telefonico` (
   `id_telefono` INT NOT NULL AUTO_INCREMENT,
   `num_telefono` VARCHAR(13) NULL,
-  `ClienteCiudadano_num_cedula` CHAR(10) NULL,
-  `ClienteEmpresa_RUC` CHAR(14) NULL,
-  `Empleado_num_cedula` VARCHAR(10) NULL,
-  `Local_idLocal` INT NULL,
+  `ClienteCiudadano_num_cedula` CHAR(10) NOT NULL DEFAULT 'null',
+  `ClienteEmpresa_RUC` CHAR(14) NOT NULL DEFAULT 'null',
+  `Empleado_num_cedula` VARCHAR(10) NOT NULL DEFAULT 'null',
+  `Local_idLocal` INT UNSIGNED NOT NULL DEFAULT '0',
   `telefono_eliminado` TINYINT NULL DEFAULT 0,
   PRIMARY KEY (`id_telefono`),
   INDEX `fk_directorio_telefonico_ClienteCiudadano_idx` (`ClienteCiudadano_num_cedula` ASC),
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`directorio_telefonico` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_directorio_telefonico_Local1`
     FOREIGN KEY (`Local_idLocal`)
-    REFERENCES `sistema_bd_linea_blanca`.`Local` (`idLocal`)
+    REFERENCES `sistema_bd_linea_blanca`.`almacen` (`id_almacen`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`cotizacion` (
   `monto_estimado` FLOAT NULL,
   `ClienteCiudadano_num_cedula` CHAR(10) NULL,
   `ClienteEmpresa_RUC` CHAR(14) NULL,
-  `Empleado_num_cedula` VARCHAR(10) NOT NULL,
+  `Empleado_num_cedula` CHAR(10) NOT NULL,
   `cotizacion_eliminada` TINYINT NULL DEFAULT 0,
   PRIMARY KEY (`id_cotizacion`),
   UNIQUE INDEX `id_cotizacion_UNIQUE` (`id_cotizacion` ASC),
@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`compra` (
   `ClienteEmpresa_RUC` CHAR(14) NULL,
   `ClienteCiudadano_num_cedula` CHAR(10) NULL,
   `monto` FLOAT NULL,
-  `Empleado_num_cedula` VARCHAR(10) NOT NULL,
+  `Empleado_num_cedula` CHAR(10) NOT NULL,
   `compra_eliminada` TINYINT NULL DEFAULT 0,
   PRIMARY KEY (`id_compra`),
   UNIQUE INDEX `id_venta_UNIQUE` (`id_compra` ASC),
@@ -310,7 +310,7 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`Empleado_asociado_local` (
   INDEX `fk_Local_has_Empleado_Local1_idx` (`Local_idLocal` ASC),
   CONSTRAINT `fk_Local_has_Empleado_Local1`
     FOREIGN KEY (`Local_idLocal`)
-    REFERENCES `sistema_bd_linea_blanca`.`Local` (`idLocal`)
+    REFERENCES `sistema_bd_linea_blanca`.`almacen` (`id_almacen`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Local_has_Empleado_Empleado1`
@@ -322,9 +322,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sistema_bd_linea_blanca`.`Local_almacena_articulo`
+-- Table `sistema_bd_linea_blanca`.`almacen_tiene_articulo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`Local_almacena_articulo` (
+CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`almacen_tiene_articulo` (
   `Local_idLocal` INT UNSIGNED NOT NULL,
   `articulo_id_articulo` INT UNSIGNED NOT NULL,
   `fecha_llegada_articulo` VARCHAR(45) NULL,
@@ -335,7 +335,7 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`Local_almacena_articulo` (
   INDEX `fk_Local_has_articulo_Local1_idx` (`Local_idLocal` ASC),
   CONSTRAINT `fk_Local_has_articulo_Local1`
     FOREIGN KEY (`Local_idLocal`)
-    REFERENCES `sistema_bd_linea_blanca`.`Local` (`idLocal`)
+    REFERENCES `sistema_bd_linea_blanca`.`almacen` (`id_almacen`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Local_has_articulo_articulo1`
@@ -354,11 +354,39 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`Log` (
   `fechahora_transaccion` DATETIME NOT NULL,
   `tipo_transaccion` VARCHAR(250) NOT NULL,
   `tipo_accion` VARCHAR(45) NOT NULL,
-  `Empleado_num_cedula1` VARCHAR(10) NOT NULL,
-  PRIMARY KEY (`id_transaccion`, `Empleado_num_cedula1`),
-  INDEX `fk_Log_Empleado2_idx` (`Empleado_num_cedula1` ASC),
-  CONSTRAINT `fk_Log_Empleado2`
-    FOREIGN KEY (`Empleado_num_cedula1`)
+  `cotizacion_id_cotizacion` INT UNSIGNED NULL DEFAULT NULL,
+  `compra_id_compra` INT UNSIGNED NULL DEFAULT NULL,
+  `ClienteCiudadano_num_cedula` CHAR(10) NULL DEFAULT '9999999999',
+  `ClienteEmpresa_RUC` CHAR(14) NULL DEFAULT '99999999999999',
+  `Empleado_num_cedula` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`id_transaccion`),
+  INDEX `fk_Log_cotizacion1_idx` (`cotizacion_id_cotizacion` ASC),
+  INDEX `fk_Log_compra1_idx` (`compra_id_compra` ASC),
+  INDEX `fk_Log_ClienteCiudadano1_idx` (`ClienteCiudadano_num_cedula` ASC),
+  INDEX `fk_Log_ClienteEmpresa1_idx` (`ClienteEmpresa_RUC` ASC),
+  INDEX `fk_Log_Empleado1_idx` (`Empleado_num_cedula` ASC),
+  CONSTRAINT `fk_Log_cotizacion1`
+    FOREIGN KEY (`cotizacion_id_cotizacion`)
+    REFERENCES `sistema_bd_linea_blanca`.`cotizacion` (`id_cotizacion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Log_compra1`
+    FOREIGN KEY (`compra_id_compra`)
+    REFERENCES `sistema_bd_linea_blanca`.`compra` (`id_compra`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Log_ClienteCiudadano1`
+    FOREIGN KEY (`ClienteCiudadano_num_cedula`)
+    REFERENCES `sistema_bd_linea_blanca`.`ClienteCiudadano` (`num_cedula`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Log_ClienteEmpresa1`
+    FOREIGN KEY (`ClienteEmpresa_RUC`)
+    REFERENCES `sistema_bd_linea_blanca`.`ClienteEmpresa` (`RUC`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Log_Empleado1`
+    FOREIGN KEY (`Empleado_num_cedula`)
     REFERENCES `sistema_bd_linea_blanca`.`Empleado` (`num_cedula`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
