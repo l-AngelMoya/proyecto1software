@@ -87,22 +87,22 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`directorio_telefonico` (
   INDEX `fk_directorio_telefonico_Local1_idx` (`Local_idLocal` ASC),
   CONSTRAINT `fk_directorio_telefonico_ClienteCiudadano`
     FOREIGN KEY (`ClienteCiudadano_num_cedula`)
-    REFERENCES `mydb`.`ClienteCiudadano` (`num_cedula`)
+    REFERENCES `sistema_bd_linea_blanca`.`ClienteCiudadano` (`num_cedula`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_directorio_telefonico_ClienteEmpresa1`
     FOREIGN KEY (`ClienteEmpresa_RUC`)
-    REFERENCES `mydb`.`ClienteEmpresa` (`RUC`)
+    REFERENCES `sistema_bd_linea_blanca`.`ClienteEmpresa` (`RUC`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_directorio_telefonico_Empleado1`
     FOREIGN KEY (`Empleado_num_cedula`)
-    REFERENCES `mydb`.`Empleado` (`num_cedula`)
+    REFERENCES `sistema_bd_linea_blanca`.`Empleado` (`num_cedula`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_directorio_telefonico_Local1`
     FOREIGN KEY (`Local_idLocal`)
-    REFERENCES `mydb`.`Local` (`idLocal`)
+    REFERENCES `sistema_bd_linea_blanca`.`Local` (`idLocal`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -126,17 +126,17 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`cotizacion` (
   INDEX `fk_cotizacion_Empleado1_idx` (`Empleado_num_cedula` ASC),
   CONSTRAINT `fk_cotizacion_ClienteCiudadano1`
     FOREIGN KEY (`ClienteCiudadano_num_cedula`)
-    REFERENCES `mydb`.`ClienteCiudadano` (`num_cedula`)
+    REFERENCES `sistema_bd_linea_blanca`.`ClienteCiudadano` (`num_cedula`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cotizacion_ClienteEmpresa1`
     FOREIGN KEY (`ClienteEmpresa_RUC`)
-    REFERENCES `mydb`.`ClienteEmpresa` (`RUC`)
+    REFERENCES `sistema_bd_linea_blanca`.`ClienteEmpresa` (`RUC`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cotizacion_Empleado1`
     FOREIGN KEY (`Empleado_num_cedula`)
-    REFERENCES `mydb`.`Empleado` (`num_cedula`)
+    REFERENCES `sistema_bd_linea_blanca`.`Empleado` (`num_cedula`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -170,12 +170,12 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`articulos_asociados_cotiza
   INDEX `fk_cotizacion_has_articulo_cotizacion1_idx` (`cotizacion_id_cotizacion` ASC),
   CONSTRAINT `fk_cotizacion_has_articulo_cotizacion1`
     FOREIGN KEY (`cotizacion_id_cotizacion`)
-    REFERENCES `mydb`.`cotizacion` (`id_cotizacion`)
+    REFERENCES `sistema_bd_linea_blanca`.`cotizacion` (`id_cotizacion`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cotizacion_has_articulo_articulo1`
     FOREIGN KEY (`articulo_id_articulo`)
-    REFERENCES `mydb`.`articulo` (`id_articulo`)
+    REFERENCES `sistema_bd_linea_blanca`.`articulo` (`id_articulo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -204,12 +204,12 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`forma_de_pago_asociada_cot
   INDEX `fk_cotizacion_has_forma_de_pago_cotizacion1_idx` (`cotizacion_id_cotizacion` ASC),
   CONSTRAINT `fk_cotizacion_has_forma_de_pago_cotizacion1`
     FOREIGN KEY (`cotizacion_id_cotizacion`)
-    REFERENCES `mydb`.`cotizacion` (`id_cotizacion`)
+    REFERENCES `sistema_bd_linea_blanca`.`cotizacion` (`id_cotizacion`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cotizacion_has_forma_de_pago_forma_de_pago1`
     FOREIGN KEY (`forma_de_pago_id_forma_de_pago`)
-    REFERENCES `mydb`.`forma_de_pago` (`id_forma_de_pago`)
+    REFERENCES `sistema_bd_linea_blanca`.`forma_de_pago` (`id_forma_de_pago`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -233,17 +233,17 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`compra` (
   INDEX `fk_compra_Empleado1_idx` (`Empleado_num_cedula` ASC),
   CONSTRAINT `fk_compra_ClienteEmpresa1`
     FOREIGN KEY (`ClienteEmpresa_RUC`)
-    REFERENCES `mydb`.`ClienteEmpresa` (`RUC`)
+    REFERENCES `sistema_bd_linea_blanca`.`ClienteEmpresa` (`RUC`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_compra_ClienteCiudadano1`
     FOREIGN KEY (`ClienteCiudadano_num_cedula`)
-    REFERENCES `mydb`.`ClienteCiudadano` (`num_cedula`)
+    REFERENCES `sistema_bd_linea_blanca`.`ClienteCiudadano` (`num_cedula`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_compra_Empleado1`
     FOREIGN KEY (`Empleado_num_cedula`)
-    REFERENCES `mydb`.`Empleado` (`num_cedula`)
+    REFERENCES `sistema_bd_linea_blanca`.`Empleado` (`num_cedula`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -261,12 +261,12 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`forma_de_pago_asociado_com
   INDEX `fk_forma_de_pago_has_compra_forma_de_pago1_idx` (`forma_de_pago_id_forma_de_pago` ASC),
   CONSTRAINT `fk_forma_de_pago_has_compra_forma_de_pago1`
     FOREIGN KEY (`forma_de_pago_id_forma_de_pago`)
-    REFERENCES `mydb`.`forma_de_pago` (`id_forma_de_pago`)
+    REFERENCES `sistema_bd_linea_blanca`.`forma_de_pago` (`id_forma_de_pago`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_forma_de_pago_has_compra_compra1`
     FOREIGN KEY (`compra_id_compra`)
-    REFERENCES `mydb`.`compra` (`id_compra`)
+    REFERENCES `sistema_bd_linea_blanca`.`compra` (`id_compra`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -284,12 +284,12 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`articulo_asociado_compra` 
   INDEX `fk_articulo_has_compra_articulo1_idx` (`articulo_id_articulo` ASC),
   CONSTRAINT `fk_articulo_has_compra_articulo1`
     FOREIGN KEY (`articulo_id_articulo`)
-    REFERENCES `mydb`.`articulo` (`id_articulo`)
+    REFERENCES `sistema_bd_linea_blanca`.`articulo` (`id_articulo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_articulo_has_compra_compra1`
     FOREIGN KEY (`compra_id_compra`)
-    REFERENCES `mydb`.`compra` (`id_compra`)
+    REFERENCES `sistema_bd_linea_blanca`.`compra` (`id_compra`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -310,12 +310,12 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`Empleado_asociado_local` (
   INDEX `fk_Local_has_Empleado_Local1_idx` (`Local_idLocal` ASC),
   CONSTRAINT `fk_Local_has_Empleado_Local1`
     FOREIGN KEY (`Local_idLocal`)
-    REFERENCES `mydb`.`Local` (`idLocal`)
+    REFERENCES `sistema_bd_linea_blanca`.`Local` (`idLocal`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Local_has_Empleado_Empleado1`
     FOREIGN KEY (`Empleado_num_cedula`)
-    REFERENCES `mydb`.`Empleado` (`num_cedula`)
+    REFERENCES `sistema_bd_linea_blanca`.`Empleado` (`num_cedula`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -335,12 +335,12 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`Local_almacena_articulo` (
   INDEX `fk_Local_has_articulo_Local1_idx` (`Local_idLocal` ASC),
   CONSTRAINT `fk_Local_has_articulo_Local1`
     FOREIGN KEY (`Local_idLocal`)
-    REFERENCES `mydb`.`Local` (`idLocal`)
+    REFERENCES `sistema_bd_linea_blanca`.`Local` (`idLocal`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Local_has_articulo_articulo1`
     FOREIGN KEY (`articulo_id_articulo`)
-    REFERENCES `mydb`.`articulo` (`id_articulo`)
+    REFERENCES `sistema_bd_linea_blanca`.`articulo` (`id_articulo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -359,7 +359,7 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`Log` (
   INDEX `fk_Log_Empleado2_idx` (`Empleado_num_cedula1` ASC),
   CONSTRAINT `fk_Log_Empleado2`
     FOREIGN KEY (`Empleado_num_cedula1`)
-    REFERENCES `mydb`.`Empleado` (`num_cedula`)
+    REFERENCES `sistema_bd_linea_blanca`.`Empleado` (`num_cedula`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
