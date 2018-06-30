@@ -392,6 +392,54 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`Log` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+#vistas de inventario
+CREATE VIEW `vista_articulos_disponibles` AS  
+	SELECT articulo.id_articulo as código, articulo.descripcion, articulo.marca, articulo.precio_cliente as precio, almacen_tiene_articulo.cantidad_articulo_disponible as cantidad_disponible
+	from articulo
+	JOIN almacen_tiene_articulo 
+	ON articulo.id_articulo= almacen_tiene_articulo.articulo_id_articulo     
+	where almacen_tiene_articulo.reabastecimiento_solicitado='0' and articulo.articulo_eliminado='0';
+
+CREATE VIEW `vista_articulos_solicitados` AS  
+	SELECT articulo.id_articulo as código, articulo.descripcion, articulo.marca, articulo.precio_cliente as precio
+	from articulo
+	JOIN almacen_tiene_articulo 
+	ON articulo.id_articulo = almacen_tiene_articulo.articulo_id_articulo     
+	where almacen_tiene_articulo.reabastecimiento_solicitado='1' and articulo.articulo_eliminado='0';
+
+CREATE VIEW `vista_articulos_todos` AS
+	SELECT articulo.id_articulo as código, articulo.descripcion, articulo.marca, articulo.precio_cliente as precio, almacen_tiene_articulo.cantidad_articulo_disponible as cantidad_disponible
+	from articulo
+	JOIN almacen_tiene_articulo 
+	ON articulo.id_articulo = almacen_tiene_articulo.articulo_id_articulo     
+	where articulo.articulo_eliminado='0';
+    
+#vista de log
+
+CREATE VIEW `vista_log_por_empleado` AS
+	SELECT log.id_transaccion as id, log.fechahora_transaccion as fecha, log.tipo_transaccion as transaccion, log.tipo_accion as accion_realizada, concat(empleado.nombre,' ',empleado.apellido) as empleado, empleado.usuario as usuario, cotizacion_id_cotizacion as cotizacion_modificada, compra_id_compra as compra_modificada, ClienteCiudadano_num_cedula as cedula_cpersona_modificado, ClienteEmpresa_RUC as RUC_cempresa_modificado
+	from log
+    join empleado
+    on empleado.num_cedula=log.Empleado_num_cedula
+    group by empleado.usuario
+    order by log.fechahora_transaccion asc;
+
+
+#usuarios
+
+
+CREATE USER 'gerente_lbsa' identified by 'manager1234';
+CREATE USER 'administrador_lbsa' identified by 'root1234';
+CREATE USER 'vendedor_lbsa' identified by 'vendor1234';
+
+ 
+ #privilegios de los usuarios
+ 
+GRANT SELECT ON TABLE `sistema_bd_linea_blanca`.* TO 'gerente_lbsa';
+GRANT SELECT, INSERT, UPDATE ON TABLE `sistema_bd_linea_blanca`.* TO 'administrador_lbsa';
+GRANT SELECT, INSERT ON TABLE `sistema_bd_linea_blanca`.* TO 'vendedor_lbsa';
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
