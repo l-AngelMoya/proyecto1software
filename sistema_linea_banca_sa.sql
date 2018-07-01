@@ -345,6 +345,29 @@ CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`almacen_tiene_articulo` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `sistema_bd_linea_blanca`.`comprobante_de_retencion_cliente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sistema_bd_linea_blanca`.`comprobante_de_retencion_cliente` (
+  `id_comprobante_de_retencion` INT NOT NULL,
+  `numero_autorizacion` VARCHAR(45) NOT NULL,
+  `tipo_comprobante_venta` VARCHAR(45) NOT NULL,
+  `valor_retenido` FLOAT NOT NULL,
+  `tipo_de_impuesto` VARCHAR(45) NOT NULL,
+  `ejercicio_fiscal` VARCHAR(250) NOT NULL,
+  `codigo_del_impuesto` VARCHAR(45) NOT NULL,
+  `porcentaje_de_retencion` INT NOT NULL,
+  `compra_id_compra` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`id_comprobante_de_retencion`),
+  INDEX `fk_comprobante_de_retencion_cliente_compra1_idx` (`compra_id_compra` ASC),
+  UNIQUE INDEX `compra_id_compra_UNIQUE` (`compra_id_compra` ASC),
+  CONSTRAINT `fk_comprobante_de_retencion_cliente_compra1`
+    FOREIGN KEY (`compra_id_compra`)
+    REFERENCES `sistema_bd_linea_blanca`.`compra` (`id_compra`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `sistema_bd_linea_blanca`.`Log`
